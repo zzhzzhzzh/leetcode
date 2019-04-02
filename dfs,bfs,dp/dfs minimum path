@@ -1,0 +1,38 @@
+	int[] dx = {-1,1,1,-1};
+	int[] dy = {1,1,-1,-1};
+	int m, n;
+    public int shortestDistance(int[][] matrix, int x1, int y1, int x2, int y2){                 
+        if (matrix == null || matrix.length == 0 || matrix[0].length == 0) {
+            return -1;
+        }         
+        if (x1 == x2 && y1 == y2) {
+       	 return 0;
+        }
+       	m = matrix.length;
+       	n = matrix[0].length;
+       	boolean[][] visited = new boolean[m][n];
+       	
+        int step = 0;
+        int res = dfs(matrix, x1, y1, x2, y2, step, visited);
+        return res;
+   }
+   private int dfs(int[][] matrix, int i1, int j1, int i2, int j2, int step, boolean[][] visited) {
+	       if (i1 == i2 && j1 == j2) {
+		      return step;
+	       }    
+	       visited[i1][j1] = true;
+      	        int minLen = Integer.MAX_VALUE;
+   	        for (int k = 0; k < 4; k++) {
+   	        	int nx = i1 + dx[k];
+   	        	int ny = j1 + dy[k];  	           
+   	        	
+   	        	if (nx >= 0 && nx < m && ny >= 0 && ny < n && visited[nx][ny] == false) {
+   	        	     int len = dfs(matrix, nx, ny, i2, j2, step + 1, visited);
+   	        	     if(len < minLen) {
+   	        	    	minLen = len;
+   	        	     }
+   	        	    visited[nx][ny] = false;
+   		  }
+   	        }
+   	       return minLen;
+   	}
